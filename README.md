@@ -11,7 +11,7 @@ A Chess Tournament List page built with Next.js 15, React 19, and Tailwind CSS v
 
 ## Data approach
 
-The tournament data lives in `app/data/tournaments.ts` as a typed TypeScript `const` rather than a raw JSON import. This avoids enabling `resolveJsonModule` in `tsconfig.json` and keeps the data co-located with its TypeScript types (`Tournament`, `TimeControl`, `TournamentStatus`). The shape is identical to the provided `tournament.json`.
+The tournament data lives in `app/data/tournaments.ts` as a typed TypeScript `const` rather than a raw JSON import. This avoids enabling `resolveJsonModule` in `tsconfig.json` and keeps the data co-located with its TypeScript types (`Tournament`, `TimeControl`, `TournamentStatus`).
 
 ## Getting Started
 
