@@ -150,6 +150,28 @@ function FilterRow<T extends string>({
   );
 }
 
+function RollingNumber({ value }: { value: number }) {
+  const digits = String(value).split("");
+  return (
+    <span className="inline-flex overflow-hidden" style={{ lineHeight: 1 }}>
+      <AnimatePresence mode="popLayout" initial={false}>
+        {digits.map((digit, i) => (
+          <motion.span
+            key={`${digits.length - i}-${digit}`}
+            initial={{ y: "-100%", opacity: 0 }}
+            animate={{ y: "0%", opacity: 1 }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="inline-block"
+          >
+            {digit}
+          </motion.span>
+        ))}
+      </AnimatePresence>
+    </span>
+  );
+}
+
 type EnrichedTournament = Tournament & {
   currentCount: number;
   isJoined: boolean;
@@ -236,7 +258,7 @@ function TournamentCard({
             </div>
             <span className="flex items-center gap-1.5">
               <Users size={13} />
-              {currentCount} / {maxPlayers} Players
+              <RollingNumber value={currentCount} /> / {maxPlayers} Players
             </span>
           </div>
         </CardContent>
