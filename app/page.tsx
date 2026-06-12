@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Trophy,
@@ -88,6 +88,22 @@ function StatCard({
   icon: React.ReactNode;
   valueClass: string;
 }) {
+  const [displayed, setDisplayed] = useState(0);
+  const rafRef = useRef<number>(null);
+
+  useEffect(() => {
+    const duration = 800;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplayed(Math.round(eased * value));
+      if (progress < 1) rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, [value]);
+
   return (
     <motion.div
       whileHover={{ y: -2 }}
@@ -100,7 +116,7 @@ function StatCard({
               {label}
             </p>
             <span className={cn("text-4xl font-bold tabular-nums", valueClass)}>
-              {value}
+              {displayed}
             </span>
           </div>
           <div className="w-11 h-11 rounded-full bg-[#1E293B] flex items-center justify-center text-[#a7b6cc]">
